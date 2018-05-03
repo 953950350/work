@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .main {
+            padding: 15px 20px;
+            border: 1px dashed #ff6c60;
+        }
+        .left {
+            width: 120px;
+            border: 5px solid #ddd;
+        }
+        .right {
+            margin-left: 20px;
+            border: 5px solid #ddd;
+        }
+        /*双inline-block方案*/
+        .main-inline-block {
+            box-sizing:content-box;
+            font-size: 0;/*消除空格的影响*/
+        }
+        .main-inline-block .left,
+        .main-inline-block .right {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 14px;
+            box-sizing:border-box;
+        }
+        .main-inline-block .right {
+            width: calc(100% - 140px);
+        }
+        /*双float方案*/
+        .main-double-float {
+            overflow: auto;
+            box-sizing:content-box;
+        }
+        .main-double-float .left,
+        .main-double-float .right {
+            float: left;
+            box-sizing:border-box;
+        }
+        .main-double-float .right {
+            width: calc(100% - 140px);
+        }
+        /*float-margin-left方案*/
+        .main-float {
+            overflow: hidden;
+        }
+        .main-float .left {
+            float: left;
+        }
+        .main-float .right {
+            margin-left: 150px;
+        }
+        /*absolute+margin-left方法*/
+        .main-absolute {
+            position: relative;
+            min-height: 50px;
+        }
+        .main-absolute .left {
+            position: absolute;
+        }
+        .main-absolute .right {
+            margin-left: 150px;
+        }
+        /*使用float+BFC方法*/
+        .main-float-bfc {
+            overflow: auto;
+        }
+        .main-float-bfc .left {
+            float: left;
+            margin-right: 20px;
+        }
+        .main-float-bfc .right {
+            margin-left: 0;
+            overflow: auto;
+        }
+        /*flex方案*/
+        .main-flex {
+            display: flex;
+            align-items: flex-start;
+        }
+        .main-flex .left {
+            flex: 0 0 auto;
+        }
+        .main-flex .right {
+            flex: 1 1 auto;
+        }
+        /*grid方案*/
+        .main-grid {
+            display: grid;
+            grid-template-columns:120px 1fr ;
+            align-items: start;
+        }
+        .main-grid .left,
+        .main-grid .right {
+            box-sizing:border-box;
+        }
+        .main-grid .left {
+            grid-column: 1;
+        }
+        .main-grid .right {
+            grid-column: 2;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="main main-grid">
+        <div class="left">我是左边固定宽度的盒子</div>
+        <div class="right">我是右边自适应的盒子</div>
+    </div>
+    <div class="button">
+        <button>双inline-block方案</button>
+        <button>双float方案</button>
+        <button>float-margin-left方案</button>
+        <button>absolute+margin-left方法</button>
+        <button>使用float+BFC方法</button>
+        <button>flex方案</button>
+        <button>grid方案</button>
+    </div>
+    <script>
+        var box = document.getElementsByTagName("div")[0];
+        var btn = document.getElementsByTagName("button");
+        var arr = ["main main-inline-block","main main-double-float","main main-float","main main-absolute","main main-float-bfc","main main-flex","main main-grid"];
+        for(var i=0;i<btn.length;i++){
+            btn[i].index = i;
+            btn[i].onclick = function () {
+                box.className = arr[this.index];
+            }
+        }
+    </script>
+</body>
+</html>
